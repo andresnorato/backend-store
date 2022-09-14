@@ -8,32 +8,157 @@ const app = express();
 const port = 3001;
 
 
-app.get('/', (req, res) => {
-  res.send('Hola mi serve en express');
-});
+// app.get('/', (req, res) => {
+//   res.send('Hola mi serve en express');
+// });
 
 
-app.get('/nueva-ruta', (req, res) => {
-  res.send('Hola soy la nueva ruta');
-});
+// app.get('/nueva-ruta', (req, res) => {
+//   res.send('Hola soy la nueva ruta');
+// });
 
 
 app.get('/products', (req, res) => {
+  res.json([
+    {
+      name: 'Product 1',
+      price: 1000,
+      descripcion: 'bla bla bla'
+    },
+    {
+      name: 'Product 2',
+      price: 500,
+      descripcion: 'bla bla bla'
+    },
+    {
+      name: 'Product 3',
+      price: 500,
+      descripcion: 'bla bla bla'
+    },
+
+  ]);
+});
+
+app.get('/products/:id', (req, res) => {
+  const { id } = req.params;
   res.json({
-    name: 'Product 1',
+    id,
+    name: 'Product 2',
     price: 1000
   });
 });
 
 
-app.get('/categories', (req, res) =>{
-  res.json({
+
+app.get('/categories', (req, res) => {
+  res.json([{
     id: 1,
     name: 'Eletrodomesticos',
+  },
+
+  {
+    id: 2,
+    name: 'Tecnologia'
+  },
+
+  {
+    id: 3,
+    name: 'Cosmeticos'
+  }
+  ]);
+});
+
+
+
+app.get('/category/:id', (req, res) => {
+  const { id} = req.params;
+  res.json({
+    id,
+    name: 'Electrodomesticos',
+  });
+});
+
+
+
+app.get('/users', (req, res) => {
+  res.json([
+    {
+      name: 'Andres',
+      age: 15,
+      email: 'carnorat@gmail.com',
+    },
+    {
+      name: 'Alejandra',
+      age: 15,
+      email: 'carnorat@gmail.com',
+    },
+    {
+      name: 'Camilo',
+      age: 15,
+      email: 'carnorat@gmail.com',
+    }
+  ])
+});
+
+app.get('/users/:id', (req, res)=>{
+  const { id } =  req.params;
+  res.json({
+    id,
+    name: 'Andres',
+    email: 'carnorat@gmail.com',
+    age: 10
   })
 })
 
 
-app.listen(port, ()=> {
+
+
+
+
+app.listen(port, () => {
   console.log('Mi port' + port);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// app.get('/categories/:categoryId/products/:id', (req, res) => {
+//   const { categoryId, id } = req.params;
+//   res.json({
+//     categoryId,
+//     id,
+//     name: 'Product 3',
+//     price: 589,
+//   })
+// })
