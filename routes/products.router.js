@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
       image: faker.image.imageUrl(),
     });
   }
-  res.json(products);
+  res.json.status(200)(products);
 });
 
 router.get('/filter', (req, res) => {
@@ -28,23 +28,63 @@ router.get('/filter', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  res.json({
-    id,
-    name: 'Product 2',
-    price: 1000
-  });
+  if (id === '999') {
+    res.status(404).json({
+      message: 'not found'
+    });
+  } else {
+    res.status(200).json({
+      id,
+      name: 'Product 2',
+      price: 1000
+    });
+  }
 });
+
 
 
 //POST
 router.post('/', (req, res) => {
-    const body =  req.body
+  const body = req.body
 
-  res.json({
+  res.status(201).json({
     message: 'created',
     data: body
   });
-})
+});
+
+//PUT
+router.put('/:id', (req, res) => {
+  const body = req.body;
+  const { id } = req.params;
+
+  res.json({
+    message: 'Update',
+    data: body,
+    id
+  });
+});
+
+//PATCH
+router.patch('/:id', (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+
+  res.json({
+    message: 'Update',
+    data: body,
+    id
+  });
+});
+
+
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  res.json({
+    message: 'deleted',
+    id
+  });
+});
 
 
 module.exports = router;
