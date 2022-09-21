@@ -4,6 +4,7 @@ const faker = require('faker');
 
 const router = express.Router();
 
+//GET
 
 router.get('/', (req, res) => {
   const products = [];
@@ -33,6 +34,17 @@ router.get('/:id', (req, res) => {
     price: 1000
   });
 });
+
+
+//POST
+router.post('/', (req, res) => {
+    const body =  req.body
+
+  res.json({
+    message: 'created',
+    data: body
+  });
+})
 
 
 module.exports = router;
