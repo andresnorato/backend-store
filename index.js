@@ -1,43 +1,36 @@
-//Importamos a express recordemos que express es un mini framework que corre en node.js
 const express = require('express');
+const faker = require('faker');
 
-//Creamos la variable y  le damos la instacia de express lo que nos crea la app
+
 const app = express();
-
-//Definimos un puerto por donde vamos a escuchar
 const port = 3001;
 
+//ROUTING EN EXPRESS
 
-// app.get('/', (req, res) => {
-//   res.send('Hola mi serve en express');
-// });
-
-
-// app.get('/nueva-ruta', (req, res) => {
-//   res.send('Hola soy la nueva ruta');
-// });
+app.get('/', (req, res) => {
+  res.send('Servidor corriendo ');
+});
 
 
 app.get('/products', (req, res) => {
-  res.json([
-    {
-      name: 'Product 1',
-      price: 1000,
-      descripcion: 'bla bla bla'
-    },
-    {
-      name: 'Product 2',
-      price: 500,
-      descripcion: 'bla bla bla'
-    },
-    {
-      name: 'Product 3',
-      price: 500,
-      descripcion: 'bla bla bla'
-    },
+  const products = [];
+  const { size } = req.query;
+  const limit = size || 10;
 
-  ]);
+  for (let index = 0; index < limit; index++) {
+    products.push({
+      name: faker.commerce.productName(),
+      price: parseInt(faker.commerce.price(), 10),
+      image: faker.image.imageUrl(),
+    });
+  }
+  res.json(products);
 });
+
+app.get('/products/filter', (req, res) => {
+  res.send('Soy el filter')
+});
+
 
 app.get('/products/:id', (req, res) => {
   const { id } = req.params;
@@ -47,7 +40,6 @@ app.get('/products/:id', (req, res) => {
     price: 1000
   });
 });
-
 
 
 app.get('/categories', (req, res) => {
@@ -69,9 +61,8 @@ app.get('/categories', (req, res) => {
 });
 
 
-
 app.get('/category/:id', (req, res) => {
-  const { id} = req.params;
+  const { id } = req.params;
   res.json({
     id,
     name: 'Electrodomesticos',
@@ -79,29 +70,39 @@ app.get('/category/:id', (req, res) => {
 });
 
 
-
 app.get('/users', (req, res) => {
-  res.json([
-    {
-      name: 'Andres',
-      age: 15,
-      email: 'carnorat@gmail.com',
-    },
-    {
-      name: 'Alejandra',
-      age: 15,
-      email: 'carnorat@gmail.com',
-    },
-    {
-      name: 'Camilo',
-      age: 15,
-      email: 'carnorat@gmail.com',
-    }
-  ])
+  const { limit, offset } = req.query;
+
+  if (limit && offset) {
+    res.json({
+      limit,
+      offset
+    });
+  } else {
+    res.send('No hay parametros opcionales')
+  }
+
+  // res.json([
+  //   {
+  //     name: 'Andres',
+  //     age: 15,
+  //     email: 'carnorat@gmail.com',
+  //   },
+  //   {
+  //     name: 'Alejandra',
+  //     age: 15,
+  //     email: 'carnorat@gmail.com',
+  //   },
+  //   {
+  //     name: 'Camilo',
+  //     age: 15,
+  //     email: 'carnorat@gmail.com',
+  //   }
+  // ])
 });
 
-app.get('/users/:id', (req, res)=>{
-  const { id } =  req.params;
+app.get('/users/:id', (req, res) => {
+  const { id } = req.params;
   res.json({
     id,
     name: 'Andres',
@@ -109,10 +110,6 @@ app.get('/users/:id', (req, res)=>{
     age: 10
   })
 })
-
-
-
-
 
 
 app.listen(port, () => {
