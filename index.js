@@ -2,7 +2,7 @@ const express = require('express');
 const routerApi =  require('./routes');
 
 const app = express();
-const port = 3001;
+const port = 3000;
 
 //ROUTING EN EXPRESS
 
@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 });
 
 
-routerApi(app)
+routerApi(app);
 
 
 app.listen(port, () => {
