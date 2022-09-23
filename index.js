@@ -15,20 +15,20 @@ app.get('/', (req, res) => {
 });
 
 
-const whiteList = [ 'http://localhos:8000', 'http://myapp.co',]
-const options = {
-  origin: (origin, callback)=>{
-    if(whiteList.includes(origin) || !origin ){
-      callback(null, true);
-    }else {
-      callback(new Error('no permitido'))
-    }
-  }
-}
+// const whiteList = [ 'http://localhos:8000', 'http://myapp.co',]
+// const options = {
+//   origin: (origin, callback)=>{
+//     if(whiteList.includes(origin) || !origin ){
+//       callback(null, true);
+//     }else {
+//       callback(new Error('no permitido'))
+//     }
+//   }
+// }
 
 
 
-app.use(cors(options));
+app.use(cors());
 routerApi(app);
 
 app.use(logErrors);
