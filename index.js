@@ -4,7 +4,7 @@ const cors = require('cors');
 const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/error.handler');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 //middleware de Json
 app.use(express.json());
@@ -15,7 +15,20 @@ app.get('/', (req, res) => {
 });
 
 
-app.use(cors());
+const whiteList = [ 'http://localhos:8000', 'http://myapp.co',]
+const options = {
+  origin: (origin, callback)=>{
+    if(whiteList.includes(origin) || !origin ){
+      callback(null, true);
+    }else {
+      callback(new Error('no permitido'))
+    }
+  }
+}
+
+
+
+app.use(cors(options));
 routerApi(app);
 
 app.use(logErrors);
