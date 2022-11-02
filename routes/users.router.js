@@ -4,8 +4,8 @@ const  UsersService =  require('./../services/users.service');
 const router = express.Router();
 const service =  new UsersService();
 
-router.get('/', (req, res) => {
-   const users = service.find();
+router.get('/', async (req, res) => {
+   const users = await service.find();
     res.json(users);
 });
 

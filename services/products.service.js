@@ -1,11 +1,14 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
+const pool =  require('../libs/postgres.pool');
 
 class ProductsService {
 
   constructor() {
     this.products = [];
     this.generate();
+    this.pool =  pool;
+    this.pool.on('error', (err) => console.log(err));
   }
 
   generate() {
@@ -13,10 +16,16 @@ class ProductsService {
     for (let index = 0; index < limit; index++) {
       this.products.push({
         id: faker.datatype.uuid(),
-        name: faker.commerce.productName(),
-        price: parseInt(faker.commerce.price(), 10),
-        image: faker.image.imageUrl(),
-        isBlock: faker.datatype.boolean()
+
+        typeImg: faker.image.image(),
+        identificacion: faker.datatype.number(),
+
+        // edad: faker.commerce.productDescription(),
+        id_producto: faker.datatype.uuid(),
+        // email: faker.internet.email(),
+        // isBlock: faker.datatype.boolean()
+        // edad: faker.datatype.number(100) // 52
+        producto:faker.commerce.product()
       });
     }
   }
@@ -31,12 +40,10 @@ class ProductsService {
     return newProduct;
   }
 
-  find() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.products)
-      }, 5000);
-    });
+  async find() {
+    const query  =  'SELECT *  FROM task';
+    const rta =  await this.pool.query(query);
+    return rta.rows;
   }
 
   async findOne(id) {
