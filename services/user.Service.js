@@ -1,8 +1,10 @@
 const boom = require('@hapi/boom');
+const pool = require('../libs/postgres.pool');
+
+
 
 class UsersService {
   constructor() {
-
     this.users = [{
       id: '1',
       name: 'Juan Camilo',
@@ -17,10 +19,18 @@ class UsersService {
       telefono: 132121,
       password: '121231231'
     }];
+    this.pool = pool;
+    this.pool.on('Error en la conexion', (err) => console.log(err));
+
+
   }
 
-  find() {
-    return this.users;
+  async find() {
+    const query = 'SELECT *  FROM task';
+    const rta =  await this.pool.query(query);
+    return rta.rows;
+
+
   }
 
   async findOne(id) {
