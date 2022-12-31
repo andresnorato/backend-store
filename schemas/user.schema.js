@@ -1,16 +1,22 @@
 const Joi =  require('joi');
 
-const name = Joi.string().min(3).max(15);
+const id = Joi.number().integer;
 const email =  Joi.string().email();
-const telefono =  Joi.number().integer().min(10).max(10);
 const password =  Joi.string().min(8).max(15);
+// const telefono =  Joi.number().integer().min(10).max(10);
+const role =  Joi.string().min(5)
 
 
-const createUser = Joi.object({
-  name: name.required(),
+const createUserSchema = Joi.object({
   email: email.required(),
-  telefono: telefono.require(),
   password: password.required()
 });
 
-module.exports = {createUser}
+
+
+const updateUserSchema = Joi.object({
+  email: email,
+  // role: role
+})
+
+module.exports = {createUserSchema, updateUserSchema  }

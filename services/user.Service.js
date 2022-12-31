@@ -1,5 +1,6 @@
 const boom = require('@hapi/boom');
 const pool = require('../libs/postgres.pool');
+const { models } = require('../libs/sequelize');
 
 
 
@@ -21,60 +22,42 @@ class UsersService {
     }];
     this.pool = pool;
     this.pool.on('Error en la conexion', (err) => console.log(err));
-
-
   }
 
   async find() {
-    const query = 'SELECT *  FROM task';
-    const rta =  await this.pool.query(query);
-    return rta.rows;
+    const rta = await models.User.findAll();
+    return rta;
 
 
   }
 
   async findOne(id) {
-    const user = this.users.find((item) => item.id === id);
-    if (!user) {
-      throw boom.notFound('Ups  user not found');
-    }
-    return user
+   const user = await  models.User.findByPk(id);
+   if(!user){
+     throw boom.notFound('user not  found');
+   }
+   return user
   }
 
   async create(data) {
-    const newUser = {
-      id: '3',
-      ...data,
-    }
-    this.users.push(newUser);
+    const newUser = await models.User.create(data);
     return newUser
   }
 
   async update(id, changes) {
-    const index = this.users.findIndex(user => user.id === id);
-    if (index === -1) {
-      throw boom.notFound('Ups  user not found');
-    }
-    const user = this.users[index];
-    this.users[index] = {
-      ...user,
-      ...changes
-    };
-    return this.users[index];
+    const user = await this.findOne(id);
+    const rta = await user.update(changes);
+    return rta;
   }
 
   async delete(id) {
-    const index = this.users.findIndex(user => user.id === id);
-    if (index === -1) {
-      throw boom.notFound('Ups  user not found');
-    }
-    this.users.slice(index, 1);
+    const user = await this.findOne(id);
+    await user.destroy();
     return {
-      id,
-      message: 'user deleted succesfull'
+      message: 'delete successfully',
+      id
     }
   }
-
 }
 
 module.exports = UsersService;

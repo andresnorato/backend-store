@@ -1,7 +1,7 @@
 const express = require('express');
 const routersApi =  require('./routes');
 const cors = require('cors');
-const { logErrors, errorHandler, boomErrorHandler,  } = require('./middleware/error.handler');
+const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middleware/error.handler');
 
 
 const app = express();
@@ -22,6 +22,7 @@ routersApi(app);
 
 // meiddlerware se deben hacer despues de definir el routing
 app.use(logErrors);
+app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
